@@ -13,7 +13,6 @@
 # input       [23:0]  in5,   === /        .in5(in5),
 # input       [23:0]  in6,                .in6(in6),
 # input       [23:0]  in7,                .in7(in7),
-#
 # output reg  [23:0]  out                 .out(out)
 
 
@@ -27,20 +26,25 @@ else:
     print("\nERROR: no data in cache\n")
     quit()
 
-if last_dir == "input" or last_dir == "output" or last_dir == "inout":
+if last_dir in ["input", "output", "inout"]:
 
     for line_original in lines_original:
         line = line_original.split()
+        print(line)
         if len(line) > 0:
             line[-1] = line[-1].replace(',', '')
             var_name = line[-1]
             dir = line[0]
+            # uncomment to add empty line between two type of ports
+            # if dir != last_dir:
+            #     dir = last_dir
+            #     lines += "\n" 
 
-            if dir != last_dir:
-                dir = last_dir
-                lines += "\n"
+            if dir in ["input", "output", "inout"]:
+                lines += "  ." + var_name + "("+ var_name + "),\n"
+            else:
+                lines += "\n" + ''.join(line) + "\n"
 
-            lines += "  ." + var_name + "("+ var_name + "),\n"
     lines = lines[:-2]
     print(lines)
     pyperclip.copy(str(lines))
