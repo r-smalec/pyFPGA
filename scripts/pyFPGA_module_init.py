@@ -30,7 +30,7 @@ if last_dir in ["input", "output", "inout"]:
 
     for line_original in lines_original:
         line = line_original.split()
-        print(line)
+        
         if len(line) > 0:
             line[-1] = line[-1].replace(',', '')
             var_name = line[-1]
