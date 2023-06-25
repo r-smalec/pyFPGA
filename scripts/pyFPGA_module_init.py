@@ -21,12 +21,12 @@ import pyperclip
 lines_original = pyperclip.paste().split('\n')
 lines = ""
 if len(lines_original) > 0:
-    last_dir = lines_original[0].split()[0]
+    var_dir_prev = lines_original[0].split()[0]
 else:
     print("\nERROR: no data in cache\n")
     quit()
 
-if last_dir in ["input", "output", "inout"]:
+if var_dir_prev in ["input", "output", "inout"]:
 
     for line_original_no in range(0, len(lines_original)):
         line = lines_original[line_original_no].split()
@@ -41,13 +41,13 @@ if last_dir in ["input", "output", "inout"]:
 
             line[-1] = line[-1].replace(',', '')
             var_name = line[-1]
-            dir = line[0]
+            var_dir = line[0]
             # uncomment to add empty line between two type of ports
-            # if dir != last_dir:
-            #     dir = last_dir
+            # if var_dir != var_dir_prev:
+            #     var_dir = var_dir_prev
             #     lines += "\n" 
 
-            if dir in ["input", "output", "inout"]:
+            if var_dir in ["input", "output", "inout"]:
 
                 if line_original_no == len(lines_original) - 1:
                     lines += "\t." + var_name + "("+ var_name + ") " + comment + "\n"
