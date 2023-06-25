@@ -2,18 +2,18 @@
 #
 # EXAMPLE
 #
-# What you copy:                           What you get:
+# What you copy:                                    What you get:
 #
-# input       [2:0]   sel,                .sel(sel),
-# input       [23:0]  in0,                .in0(in0),
-# input       [23:0]  in1,                .in1(in1),
-# input       [23:0]  in2,   === \        .in2(in2),
-# input       [23:0]  in3,   =    \       .in3(in3),
-# input       [23:0]  in4,   =    /       .in4(in4),
-# input       [23:0]  in5,   === /        .in5(in5),
-# input       [23:0]  in6,                .in6(in6),
-# input       [23:0]  in7,                .in7(in7),
-# output reg  [23:0]  out                 .out(out)
+# input       [2:0]   sel,                          .sel(sel),
+# input       [23:0]  in0, //inputs                 .in0(in0), // inputs
+# input       [23:0]  in1,                          .in1(in1),
+# input       [23:0]  in2,             === \        .in2(in2),
+# input       [23:0]  in3,             =    \       .in3(in3),
+# input       [23:0]  in4,             =    /       .in4(in4),
+# input       [23:0]  in5,             === /        .in5(in5),
+# input       [23:0]  in6,                          .in6(in6),
+# input       [23:0]  in7,                          .in7(in7),
+# output reg  [23:0]  out // output                 .out(out) // output
 
 
 import pyperclip
@@ -48,11 +48,11 @@ if last_dir in ["input", "output", "inout"]:
             #     lines += "\n" 
 
             if dir in ["input", "output", "inout"]:
-                
+
                 if line_original_no == len(lines_original) - 1:
-                    lines += "  ." + var_name + "("+ var_name + ") " + comment + "\n"
+                    lines += "\t." + var_name + "("+ var_name + ") " + comment + "\n"
                 else:
-                    lines += "  ." + var_name + "("+ var_name + "), " + comment + "\n"
+                    lines += "\t." + var_name + "("+ var_name + "), " + comment + "\n"
 
             else:
                 lines += "\n" + ''.join(line) + "\n"
