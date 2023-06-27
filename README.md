@@ -11,8 +11,11 @@ Requirements:
 Scripts ready to use:
 * pyFPGA_module_init.py  for Verilog modules initialization
 * pyFPGA_signals_declaration.py  for Verilog signals declaration
-
-Work in progress:
 * pyFPGA_diff_signals_into_bufds.py  for Verilog differential signals pack into IBUFFDS for input and OBUFDS for output
 
+Work in progress:
+
 Planed for the future:
+* case instruction generator
+* module initializator with parameters interpretation
+* testbench generator for unit test of a single module
