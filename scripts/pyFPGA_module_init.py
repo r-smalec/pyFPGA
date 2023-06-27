@@ -47,10 +47,12 @@ if len(lines_original) > 0:
                 #     var_dir = var_dir_prev
                 #     lines += "\n" 
 
+                tabs = "\t" * int(  8 - int((len(var_name) + 1) / 4)    )
+
                 if line_original_no == len(lines_original) - 1:
-                    lines += "\t." + var_name + "("+ var_name + ") " + comment + "\n"
+                    lines += "\t." + var_name + "\t" + tabs + "("+ var_name + ") " + comment + "\n"
                 else:
-                    lines += "\t." + var_name + "("+ var_name + "), " + comment + "\n"
+                    lines += "\t." + var_name + "\t" + tabs + "("+ var_name + "), " + comment + "\n"
 
     print(lines)
     pyperclip.copy(str(lines))
