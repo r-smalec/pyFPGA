@@ -10,7 +10,7 @@
 # input               single_ended_in,   ====\          .IB  (diff_in_n[0]),
 # output              diff_out_n,        =    \         .O   (diff_in[0])
 # output              diff_out_p,        =    /     );
-# output              single_ended_out,  ====/
+# output              single_ended_out   ====/
 #                                                   IBUFDS  diff_in1_inst (
 #                                                       .I   (diff_in_p[1]),
 #                                                       .IB  (diff_in_n[1]),
@@ -18,9 +18,9 @@
 #                                                   );
 #
 #                                                   OBUFDS  diff_out_inst (
-#                                                       .I   (diff_out_p),
-#                                                       .IB  (diff_out_n),
-#                                                       .O   (diff_out)
+#                                                       .I   (diff_out),
+#                                                       .O   (diff_out_p),
+#                                                       .OB  (diff_out_n)
 #                                                   );
 
 import pyperclip
@@ -46,18 +46,60 @@ if len(lines_original) > 0:
 
                 line[-1] = line[-1].replace(',', '')
 
-                var_dir = line[0]
-                var_name = line[-1]
+                var_dir = line[0] # input, output or inout
+                var_type = "wire" # wire or reg
+                var_size = "" # [end:begining]
+                var_name = line[-1] # name
 
-                # uncomment to add empty line between two type of ports
-                # if var_dir != var_dir_prev:
-                #     var_dir = var_dir_prev
-                #     lines += "\n" 
+########################## check if var is differential ##########################
+                if(var_name[-2:] != "_p"):
+                    continue
 
-                if line_original_no == len(lines_original) - 1:
-                    lines += "\t." + var_name + "("+ var_name + ") " + comment + "\n"
+########################## decode line construction ##########################
+                if len(line) == 3:                  # for line: <dir> <type/size> <name>
+                    if line[1] in ["wire", "reg"]:
+                        var_type = line[1]
+                    else:
+                        var_size = line[1]
+
+                elif len(line) == 4:                # for line: <dir> <type> <size> <name>
+                    var_type = line[1]
+                    var_size = line[2]
+                
+                else:                               # for line: <dir> <name>
+                    pass
+
+########################## calculate var length ##########################
+                var_size_left = -1
+                var_size_right = -1
+                if len(var_size) > 0:
+                    for ch in var_size:
+                        if ch.isdigit():
+                            if var_size_left < 0:
+                                var_size_left = int(ch)
+                            else:
+                                var_size_right = int(ch)
+                
+                var_length = var_size_left - var_size_right
+
+                if var_length == 0:
+                    if var_dir == "input":
+                            lines += "\nIBUFDS " + var_name[:-2] + "_inst (\n\t.I\t(" + var_name + "),\n\t.IB\t(" + var_name[:-2] + "_n),\n\t.O\t(" + var_name[:-2] + ")\n);\n" 
+
+
+                    elif var_dir == "output":
+                            lines += "\nOBUFDS " + var_name[:-2] + "_inst (\n\t.I\t(" + var_name[:-2] + "),\n\t.O\t(" + var_name + "),\n\t.OB\t(" + var_name[:-2] + "_n)\n);\n"
+                
                 else:
-                    lines += "\t." + var_name + "("+ var_name + "), " + comment + "\n"
+                
+                    if var_dir == "input":
+                            for i in range(0, var_length + 1):
+                                lines += "\nIBUFDS " + var_name[:-2] + str(i) + "_inst (\n\t.I\t(" + var_name + "[" + str(i) + "]),\n\t.IB\t(" + var_name[:-2] + "_n[" + str(i) + "]),\n\t.O\t(" + var_name[:-2] + "[" + str(i) + "])\n);\n" 
+
+
+                    elif var_dir == "output":
+                            for i in range(0, var_length + 1):
+                                lines += "\nOBUFDS " + var_name[:-2] + str(i) + "_inst (\n\t.I\t(" + var_name[:-2] + "[" + str(i) + "]),\n\t.O\t(" + var_name + "[" + str(i) + "]),\n\t.OB\t(" + var_name[:-2] + "_n[" + str(i) + "])\n);\n"
 
     print(lines)
     pyperclip.copy(str(lines))
