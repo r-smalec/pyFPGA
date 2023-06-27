@@ -33,8 +33,10 @@ if len(lines_original) > 0:
         line = lines_original[line_original_no].split()
         
         if len(line) > 0:
-            if line[0].find("/") >=0: # line with a comment
-                lines += ' '.join(line) + "\n"
+            comment_line = ""
+
+            if line[0].find("/") >= 0: # line with a comment
+                comment_line = ' '.join(line) + "\n"
 
             else:
                 comment = ""
