@@ -5,12 +5,18 @@
 #
 # What you copy:                                    What you get:
 #
-# input       [1:0]   diff_in_n,                    IBUFDS  diff_in0_inst (
-# input       [1:0]   diff_in_p,                        .I   (diff_in_p[0]),
-# input               single_ended_in,   ====\          .IB  (diff_in_n[0]),
-# output              diff_out_n,        =    \         .O   (diff_in[0])
-# output              diff_out_p,        =    /     );
+# input       [1:0]   diff_in_n,                    wire [1:0]  diff_in;
+# input       [1:0]   diff_in_p,                    wire        diff_out;
+# input               single_ended_in,   ====\      
+# output              diff_out_n,        =    \     
+# output              diff_out_p,        =    /     
 # output              single_ended_out   ====/
+#                                                   IBUFDS  diff_in0_inst (
+#                                                       .I   (diff_in_p[0]),
+#                                                       .IB  (diff_in_n[0]),
+#                                                       .O   (diff_in[0])
+#                                                   );
+#
 #                                                   IBUFDS  diff_in1_inst (
 #                                                       .I   (diff_in_p[1]),
 #                                                       .IB  (diff_in_n[1]),
@@ -26,6 +32,7 @@
 import pyperclip
 
 lines_original = pyperclip.paste().split('\n')
+lines_singnals_declarations = ""
 lines = ""
 if len(lines_original) > 0:
 
@@ -84,12 +91,16 @@ if len(lines_original) > 0:
                 
                 var_length = var_size_left - var_size_right
 
+                lines_singnals_declarations += "wire\t"
+                lines_singnals_declarations += var_size if len(var_size) > 0 else "\t"
+                lines_singnals_declarations += "\t\t" + var_name[:-2] + ";\n"
+
                 if var_length == 0:
                     if var_dir == "input":
                             lines += "\nIBUFDS " + var_name[:-2] + "_inst (\n\t.I\t(" + var_name + "),\n\t.IB\t(" + var_name[:-2] + "_n),\n\t.O\t(" + var_name[:-2] + ")\n);\n" 
 
 
-                    elif var_dir == "output":
+                    elif var_dir in ["output", "inout"]:
                             lines += "\nOBUFDS " + var_name[:-2] + "_inst (\n\t.I\t(" + var_name[:-2] + "),\n\t.O\t(" + var_name + "),\n\t.OB\t(" + var_name[:-2] + "_n)\n);\n"
                 
                 else:
@@ -104,7 +115,8 @@ if len(lines_original) > 0:
                                 lines += "\nOBUFDS " + var_name[:-2] + str(i) + "_inst (\n\t.I\t(" + var_name[:-2] + "[" + str(i) + "]),\n\t.O\t(" + var_name + "[" + str(i) + "]),\n\t.OB\t(" + var_name[:-2] + "_n[" + str(i) + "])\n);\n"
 
     print(lines)
-    pyperclip.copy(str(lines))
+    print(lines_singnals_declarations)
+    pyperclip.copy(str(lines_singnals_declarations) + str(lines))
 
 else:
     print("\nERROR: no data in cache\n")
