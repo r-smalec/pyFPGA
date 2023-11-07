@@ -73,7 +73,7 @@ if len(lines_original) > 0:
                 #     var_dir = var_dir_prev
                 #     lines += "\n" 
 
-                lines += var_type + "\t" + var_size + "\t" + var_name + "; " + comment + "\n"
+                lines += var_type + "\t" + var_size + "\t" + var_name + ";" + comment + "\n"
 
     print(lines)
     pyperclip.copy(str(lines))
