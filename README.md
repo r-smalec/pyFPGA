@@ -13,6 +13,7 @@ Scripts ready to use:
 * pyFPGA_signals_declaration.py  for Verilog signals declaration
 * pyFPGA_diff_signals_into_bufds.py  for Verilog differential signals pack into IBUFFDS for input and OBUFDS for output
 * pyFPGA_testbench_generator for unit test of a single Verilog module
+* pyFPGA_bit_parser for parse human readible data into specific bit frame format
 
 Work in progress:
 
