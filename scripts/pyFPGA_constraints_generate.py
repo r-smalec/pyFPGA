@@ -62,11 +62,10 @@ def assign_constraints(in_file_path, out_file_path, pin_mapping_file_path):
                 else:
                     pin_name = ''.join(line[1:2])
                     matching_pin = search_pin_mapping(pin_mapping_file_path, pin_name)
-                    print(pin_name)
-                    print(matching_pin)
-                    print(len(matching_pin))
+                    #print(pin_name)
+                    #print(matching_pin)
                     #TODO if pdc elif xdc
-                    if len(matching_pin) > 0:
+                    if len(matching_pin) > 0: # if matching pin was exist
                         mod_line = ' '.join(line)[:-1] + " -pinname " + matching_pin + "\n"
                     else:
                         mod_line = ' '.join(line)[:-1] + "\n"
