@@ -14,6 +14,7 @@ Scripts ready to use:
 * pyFPGA_diff_signals_into_bufds.py  for Verilog differential signals pack into IBUFFDS for input and OBUFDS for output
 * pyFPGA_testbench_generator for unit test of a single Verilog module
 * pyFPGA_bit_parser for parse human readible data into specific bit frame format
+* pyFPGA_constraints_generate creates constraint file for Libero and Vivado from Altium Pin Report File
 
 Work in progress:
 
